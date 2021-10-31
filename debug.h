@@ -1,0 +1,1 @@
+#define OUTSIDE_KEIL
