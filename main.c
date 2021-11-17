@@ -8,8 +8,6 @@ volatile float i;
 
 volatile bool square_wave;
 
-volatile bool triangle_noise;
-
 void ISR_SERIAL(void) interrupt 4
 {
     return;
@@ -86,12 +84,17 @@ float catch_note(void)
     return value;
 }
 
-void enable_int_global(void)
+void init_int(void)
 {
     IE = 0x90;
 	TH1 = 0xFD;
 	TL1 = 0XFD;
 	TR1 = 1;
+}
+
+void enable_int_global(void)
+{
+    IE = 0x90;
 }
 
 void disable_int_global(void)
@@ -102,18 +105,15 @@ void disable_int_global(void)
 void main(void)
 {
     /*
-    auto bool square_mode = true;
-    auto bool triangle_mode = false;
-    auto bool use_tremolo = false;
-    auto bool use_vibrato = false;
+    square_mode = true;
+    triangle_mode = false;
+    use_tremolo = false;
+    use_vibrato = false;
     keyboard_call = false;
-
-    auto byte sound;
-    //init_input_output();
-    //init_lcd();
     */
     P0 = 0;
 
+    //init_lcd();
     enable_int_global();
 
     square_wave = 1;
@@ -135,16 +135,15 @@ void main(void)
 
     for (i = 0; i < 100; i++)
     {
-        note_value = catch_note(); //note_value = i * 100;
-        note_value *= i;
-        note_value *= 2*PI;
-
-        note_value = sin(note_value);
+        note_value = catch_note();
 
         if (square_wave)
+        {
+            note_value *= i;
+            note_value *= 2*PI;
+            note_value = sin(note_value);
             note_value = note_value >= 0 ? 1 : 0;
-        if (triangle_noise)
-            note_value = 0;
+        }
 
         note_value *= 255;
         P0 = (int) i;

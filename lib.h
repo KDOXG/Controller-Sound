@@ -2,7 +2,7 @@
 #include <math.h>
 //#include <stdbool.h>
 
-#include "debug.h"
+//#include "debug.h"
 
 #ifdef OUTSIDE_KEIL
 #define bit int

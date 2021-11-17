@@ -3,6 +3,14 @@
 
 volatile bool keyboard_call;
 
+volatile bool square_mode;
+
+volatile bool triangle_mode;
+
+volatile bool use_tremolo;
+
+volatile bool use_vibrato;
+
 bool is_not_input(void);
 
 byte catch_note(void);
@@ -14,50 +22,6 @@ byte vibrato(byte);
 void read_serial(void) interrupt N; //N = 4
 
 void read_matrixkeyboard(void) interrupt N; //N = 0
-
-bool is_not_input(void)
-{
-    switch(SBUF)
-    {
-        case 'q':
-        case 'w':
-        case 'e':
-        case 'r':
-        case 't':
-        case 'y':
-        case 'u':
-        case 'i':
-        case 'o':
-        case 'p':
-        case 'Q':
-        case 'W':
-        case 'E':
-        case 'R':
-        case 'T':
-        case 'Y':
-        case 'U':
-        case 'I':
-        case 'O':
-        case 'P':
-            return false;
-    }
-    return true;
-}
-
-byte catch_note(void)
-{
-    auto byte value;
-    switch(SBUF)
-    {
-        case 'q':
-        case 'Q':
-            value = 1;  //template
-        break;
-        default:
-            value = 0;
-    }
-    return value;
-}
 
 byte tremolo(const byte note)
 {
@@ -71,10 +35,10 @@ byte vibrato(const byte note)
 
 void read_serial(void) interrupt N //N = 4
 {
-
+    return;
 }
 
-void read_keyboard(void) interrupt N //N = 0
+void read_matrixkeyboard(void) interrupt N //N = 0
 {
     keyboard_call = true;
     return;
